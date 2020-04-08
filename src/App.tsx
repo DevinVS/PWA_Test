@@ -4,6 +4,7 @@ import './App.css';
 
 const About = lazy(() => import('./About'));
 const Home = lazy(() => import('./Home'));
+const Camera = lazy(() => import('./Camera'))
 
 const App: React.FC = () => {
   return (
@@ -17,9 +18,15 @@ const App: React.FC = () => {
             <li>
               <Link to="/about">About</Link>
             </li>
+            <li>
+              <Link to="/camera">Upload Picture</Link>
+            </li>
           </ul>
         </nav>
         <Switch>
+          <Route path="/camera">
+            <Camera />
+          </Route>
           <Route path="/about">
             <About />
           </Route>
