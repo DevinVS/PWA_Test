@@ -1,0 +1,19 @@
+.App {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+button {
+  padding: 5px;
+  border-radius: 5px;
+  color: white;
+  background-color: #97cb04;
+}
+
+button:hover {
+  cursor: pointer;
+}

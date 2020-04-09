@@ -1,10 +1,9 @@
 import React, { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import './App.css';
+import './styles/App.scss';
 
-const About = lazy(() => import('./About'));
-const Home = lazy(() => import('./Home'));
-const Camera = lazy(() => import('./Camera'))
+const Home = lazy(() => import('./pages/HomeScreen'));
+const Barcode = lazy(() => import('./pages/BarcodeScreen'));
 
 const App: React.FC = () => {
   return (
@@ -16,19 +15,13 @@ const App: React.FC = () => {
               <Link to="/">Home</Link>
             </li>
             <li>
-              <Link to="/about">About</Link>
-            </li>
-            <li>
-              <Link to="/camera">Upload Picture</Link>
+              <Link to="/barcodes">Scan Barcodes</Link>
             </li>
           </ul>
         </nav>
         <Switch>
-          <Route path="/camera">
-            <Camera />
-          </Route>
-          <Route path="/about">
-            <About />
+          <Route path="/barcodes">
+            <Barcode />
           </Route>
           <Route path="/">
             <Home />

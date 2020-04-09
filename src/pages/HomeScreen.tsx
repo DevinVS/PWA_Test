@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Home: React.FC = () => {
-    return <h1>Welcome to your PWA!</h1>;
+    return <h1>Remote Care Home</h1>;
 }
 
 export default Home;
