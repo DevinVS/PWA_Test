@@ -72,6 +72,8 @@
     #interactive.viewport.blur video {
         filter: blur(6px);
         transform: scale(1.05);
+
+        border: solid 10px red;
     }
 
     #cancelButton {

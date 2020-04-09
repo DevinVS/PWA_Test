@@ -24,11 +24,9 @@ const BarcodeScanner: React.FC<BarcodeScannerProps> = ({ onDetect, onClose, hidd
 
     // References for the scanner, the viewport, and the checkmark animation
     let scannerRef = useRef<HTMLDivElement>(null);
-    let viewportRef = useRef<HTMLDivElement>(null);
     let checkmarkRef = useRef<HTMLDivElement>(null);
 
     const stop = () => {
-        viewportRef.current?.querySelector("video")?.pause();
         Quagga.stop();
         onClose();
     }
@@ -52,7 +50,8 @@ const BarcodeScanner: React.FC<BarcodeScannerProps> = ({ onDetect, onClose, hidd
                     readers : ["upc_reader"]
                 },
                 locate: false,
-                multiple: false
+                multiple: false,
+                debug: false
             }, (err: any) => {
 
                 if (err) {
@@ -65,9 +64,11 @@ const BarcodeScanner: React.FC<BarcodeScannerProps> = ({ onDetect, onClose, hidd
 
             Quagga.onDetected((data: any) => {
 
-                if (viewportRef.current !== null && checkmarkRef.current !== null && !viewportRef.current.classList.contains("blur")) {
-                    viewportRef.current.classList.add("blur");
-                    viewportRef.current.querySelector("video")?.pause(); // Safari goes black without pause and timeout
+                if (scannerRef.current !== null && checkmarkRef.current !== null && !scannerRef.current.classList.contains("finished")) {
+                    scannerRef.current.classList.add("finished");
+                    // viewportRef.current.querySelector("video")?.pause(); // Safari goes black without pause and timeout
+                    let v = scannerRef.current.querySelectorAll("video");
+                    v.forEach((video) => video.pause())
 
                     // Start Checkmark Animation
                     let animObj = lottie.loadAnimation({
@@ -78,17 +79,15 @@ const BarcodeScanner: React.FC<BarcodeScannerProps> = ({ onDetect, onClose, hidd
                         animationData: checkmark
                     });
 
-                    onDetect(data.codeResult.code);
-
                     // In 2 seconds stop Quagga, move the component out of sight, and run the onDetect function
                     setTimeout(() => {
-                        console.log("Quagga stopped");
-                        Quagga.stop();
+
                         animObj.destroy();
-                        if (viewportRef.current !== null) {
-                            viewportRef.current.classList.remove("blur");
+                        if (scannerRef.current !== null) {
+                            scannerRef.current.classList.remove("finished");
                         }
-                        onClose();
+                        onDetect(data.codeResult.code);
+                        stop();
                     }, 2000);
                 }
             });
@@ -102,7 +101,7 @@ const BarcodeScanner: React.FC<BarcodeScannerProps> = ({ onDetect, onClose, hidd
 
     return (
         <div className={hidden? "hidden": ""} id="BarcodeScanner" ref={scannerRef}>
-            <div id="interactive" className="viewport" ref={viewportRef}>
+            <div id="interactive" className="viewport">
                 <div id="scrim">
                     <img src={crosshair} className="crosshair" alt=""/>
                 </div>
